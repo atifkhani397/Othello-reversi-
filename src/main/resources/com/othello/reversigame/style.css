@@ -1,0 +1,102 @@
+/* --- Base Styles --- */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* --- Home Screen --- */
+
+.home-bg {
+    -fx-background-color: linear-gradient(to bottom right, #0f3d0f, #228B22);
+}
+
+.title-label {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.menu-button {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-text-fill: #004d00;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 30;
+    -fx-min-width: 250px;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 3);
+}
+
+.menu-button:hover {
+    -fx-background-color: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* --- Game Board & Pieces --- */
+.cell-bg {
+    -fx-fill: #228B22; /* Forest Green */
+    -fx-stroke: #004d00;
+    -fx-stroke-width: 1;
+}
+
+.piece-black {
+    -fx-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 2, 2);
+}
+
+.piece-white {
+    -fx-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 2, 2);
+}
+
+/* --- Player Cards --- */
+.player-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 2;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-alignment: center;
+    -fx-min-width: 140px;
+}
+
+.player-card-active {
+    -fx-border-color: #4CAF50;
+    -fx-background-color: #e8f5e9; /* Light Green */
+    -fx-effect: dropshadow(three-pass-box, rgba(76, 175, 80, 0.6), 15, 0, 0, 0);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.player-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.score-text {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #228B22;
+}
+
+/* --- Bottom Controls --- */
+.control-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+}
+.control-button:hover { -fx-background-color: #45a049; }
+
+/* --- Dark Mode Overrides --- */
+.root[style*="#2b2b2b"] .player-card { -fx-background-color: #3C3F41; -fx-border-color: #555; }
+.root[style*="#2b2b2b"] .player-name { -fx-text-fill: white; }
+.root[style*="#2b2b2b"] .player-card-active { -fx-background-color: #2e4e2e; }
+
+
