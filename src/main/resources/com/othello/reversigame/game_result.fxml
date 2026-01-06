@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<StackPane styleClass="stats-overlay" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <VBox alignment="CENTER" spacing="20" styleClass="colorful-card">
+
+        <VBox alignment="CENTER" spacing="5">
+            <Text fx:id="resultTitleText" text="YOU WON!" styleClass="colorful-header"/>
+            <Label fx:id="subMessageLabel" text="Great Job!" styleClass="winner-subtext"/>
+        </VBox>
+
+        <HBox spacing="30" alignment="CENTER" styleClass="score-box-colorful">
+            <VBox spacing="5" alignment="CENTER">
+                <StackPane styleClass="score-bubble-glossy">
+                    <Label fx:id="scoreBlack" text="34" styleClass="score-text-glossy"/>
+                </StackPane>
+                <Label text="Black" textFill="white" style="-fx-font-weight:bold;"/>
+            </VBox>
+
+            <Label text="-" textFill="white" style="-fx-font-size: 30px; -fx-font-weight:bold;"/>
+
+            <VBox spacing="5" alignment="CENTER">
+                <StackPane styleClass="score-bubble-glossy">
+                    <Label fx:id="scoreWhite" text="12" styleClass="score-text-glossy"/>
+                </StackPane>
+                <Label text="White" textFill="white" style="-fx-font-weight:bold;"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+            <Button fx:id="btnNewGame" text="PLAY AGAIN" styleClass="btn-play-again"/>
+            <Button fx:id="btnMenu" text="Close Menu" styleClass="btn-menu"/>
+        </VBox>
+
+    </VBox>
+</StackPane>

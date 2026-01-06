@@ -1,76 +1,3 @@
-//package com.othello.reversigame;
-//
-//import javafx.application.Application;
-//import javafx.geometry.Insets;
-//import javafx.geometry.Pos;
-//import javafx.scene.Scene;
-//import javafx.scene.control.*;
-//import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.GridPane;
-//import javafx.scene.layout.HBox;
-//import javafx.scene.layout.VBox;
-//import javafx.stage.Stage;
-//
-//public class Main extends Application {
-//
-//    @Override
-//    public void start(Stage primaryStage) {
-//        BorderPane root = new BorderPane();
-//        root.setPadding(new Insets(10));
-//
-//        // Top Control Bar
-//        Label title = new Label("Othello / Reversi");
-//        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-//
-//        Label status = new Label("Turn: BLACK");
-//        Label score = new Label("Black: 2 | White: 2");
-//
-//        VBox topBox = new VBox(10, title, status, score);
-//        topBox.setAlignment(Pos.CENTER);
-//        root.setTop(topBox);
-//
-//        // Center Grid
-//        GridPane grid = new GridPane();
-//        grid.setAlignment(Pos.CENTER);
-//        grid.setHgap(2);
-//        grid.setVgap(2);
-//        grid.setStyle("-fx-background-color: #006600; -fx-padding: 5;");
-//        root.setCenter(grid);
-//
-//        // Controller logic
-//        GameController controller = new GameController(grid, status, score);
-//
-//        // Bottom Controls
-//        Button restartBtn = new Button("Restart Game");
-//        restartBtn.setOnAction(e -> controller.restart());
-//
-//        Button undoBtn = new Button("Undo");
-//        undoBtn.setOnAction(e -> controller.undo());
-//
-//        CheckBox themeToggle = new CheckBox("Dark Mode");
-//        themeToggle.setOnAction(e -> controller.toggleTheme(themeToggle.isSelected()));
-//
-//        HBox bottomBox = new HBox(15, restartBtn, undoBtn, themeToggle);
-//        bottomBox.setAlignment(Pos.CENTER);
-//        bottomBox.setPadding(new Insets(10));
-//        root.setBottom(bottomBox);
-//
-//        Scene scene = new Scene(root, 500, 600);
-//        // Load CSS (Make sure style.css is in src/com/othello/)
-//        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-//
-//        primaryStage.setTitle("Othello - JavaFX Academic Project");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-//
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//}
-
-
-
 
 package com.othello.reversigame;
 
@@ -96,7 +23,7 @@ public class Main extends Application {
         showHomeScreen();
     }
 
-    // --- SCREEN 1: HOME ---
+    // SCREEN 1: HOME
     public void showHomeScreen() {
         VBox root = new VBox(30);
         root.setAlignment(Pos.CENTER);
@@ -128,7 +55,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    // --- SCREEN 2: GAME ---
+    // SCREEN 2: GAME
     public void startGame(boolean vsAI) {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(15));
@@ -186,7 +113,7 @@ public class Main extends Application {
         primaryStage.setScene(gameScene);
     }
 
-    // --- HELPER: Draw Icons via Code (No images needed) ---
+    // HELPER: Draw Icons via Code (No images needed)
     private VBox createPlayerCard(String name, boolean isComputer) {
         VBox card = new VBox(5);
         card.getStyleClass().add("player-card");

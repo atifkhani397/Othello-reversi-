@@ -1,9 +1,9 @@
-/* --- Base Styles --- */
+/*  Base Styles */
 .root {
     -fx-font-family: 'Segoe UI', sans-serif;
 }
 
-/* --- Home Screen --- */
+/* Home Screen */
 
 .home-bg {
     -fx-background-color: linear-gradient(to bottom right, #0f3d0f, #228B22);
@@ -34,7 +34,7 @@
     -fx-scale-y: 1.05;
 }
 
-/* --- Game Board & Pieces --- */
+/*  Game Board & Pieces  */
 .cell-bg {
     -fx-fill: #228B22; /* Forest Green */
     -fx-stroke: #004d00;
@@ -51,7 +51,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 2, 2);
 }
 
-/* --- Player Cards --- */
+/*  Player Cards  */
 .player-card {
     -fx-background-color: #ffffff;
     -fx-background-radius: 15;
@@ -84,7 +84,7 @@
     -fx-text-fill: #228B22;
 }
 
-/* --- Bottom Controls --- */
+/*  Bottom Controls  */
 .control-button {
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
@@ -94,9 +94,325 @@
 }
 .control-button:hover { -fx-background-color: #45a049; }
 
-/* --- Dark Mode Overrides --- */
+/*  Dark Mode Overrides  */
 .root[style*="#2b2b2b"] .player-card { -fx-background-color: #3C3F41; -fx-border-color: #555; }
 .root[style*="#2b2b2b"] .player-name { -fx-text-fill: white; }
 .root[style*="#2b2b2b"] .player-card-active { -fx-background-color: #2e4e2e; }
 
 
+.modern-dialog-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #228B22;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+    -fx-min-width: 350px;
+}
+
+.modern-dialog-header {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #228B22;
+}
+
+.modern-dialog-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+.root[style*="#2b2b2b"] .modern-dialog-card {
+    -fx-background-color: #3C3F41;
+    -fx-border-color: #555;
+}
+.root[style*="#2b2b2b"] .modern-dialog-header {
+    -fx-text-fill: #90ee90;
+}
+.root[style*="#2b2b2b"] .modern-dialog-text {
+    -fx-text-fill: #cccccc;
+}
+
+
+
+.winner-text {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #228B22;
+}
+
+.score-box-container {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #e0e0e0;
+}
+
+.score-value-large {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.root[style*="#2b2b2b"] .score-box-container {
+    -fx-background-color: #444;
+    -fx-border-color: #555;
+}
+.root[style*="#2b2b2b"] .score-value-large {
+    -fx-text-fill: white;
+}
+
+
+
+.stats-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+}
+
+.stats-card {
+    -fx-background-color: linear-gradient(to bottom, #333 0%, #1a1a1a 100%);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #555;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 10);
+    -fx-padding: 0;
+    -fx-min-width: 320px;
+    -fx-max-width: 340px;
+}
+
+.stats-header-bar {
+    -fx-background-color: linear-gradient(to bottom, #222, #000);
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 10 15;
+    -fx-border-color: #444;
+    -fx-border-width: 0 0 1 0;
+}
+
+.stats-body {
+    -fx-padding: 20;
+    -fx-alignment: top-center;
+}
+
+.profile-large-box {
+    -fx-background-color: linear-gradient(to bottom, #aaccdd 0%, #88aabb 100%);
+    -fx-background-radius: 15;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-alignment: center;
+    -fx-effect: inner-shadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 2, 2);
+}
+
+.status-title {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.score-bubble-small {
+    -fx-background-color: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+    -fx-background-radius: 15;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 1, 1);
+}
+
+.score-bubble-black {
+    -fx-background-color: linear-gradient(to bottom, #444 0%, #000 100%);
+}
+
+.stat-row-label {
+    -fx-text-fill: #ccc;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.stat-row-value {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.wide-button {
+    -fx-background-color: linear-gradient(to bottom, #333 0%, #111 50%, #000 51%, #1a1a1a 100%);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #555;
+    -fx-border-width: 2;
+    -fx-min-width: 220px;
+    -fx-padding: 8 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);
+}
+
+.wide-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #444 0%, #222 100%);
+    -fx-border-color: #777;
+}
+
+.vs-badge {
+    -fx-background-color: #8b5a2b;
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 2 6;
+    -fx-font-size: 10px;
+    -fx-border-color: #ffd700;
+    -fx-border-width: 1;
+}
+
+
+
+.stats-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+}
+
+.colorful-card {
+    -fx-background-color: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-border-color: white;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 30, 0, 0, 10);
+    -fx-padding: 30;
+    -fx-min-width: 380px;
+    -fx-alignment: center;
+}
+
+.colorful-header {
+    -fx-font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    -fx-font-size: 36px;
+    -fx-fill: white;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 2, 0, 2, 2);
+    -fx-stroke: #2a5298;
+    -fx-stroke-width: 1;
+}
+
+.winner-subtext {
+    -fx-font-size: 18px;
+    -fx-text-fill: #e0f7fa;
+    -fx-font-weight: bold;
+}
+
+.score-box-colorful {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-radius: 20;
+    -fx-padding: 15;
+    -fx-border-color: rgba(255,255,255,0.5);
+    -fx-border-width: 2;
+}
+
+.score-bubble-glossy {
+    -fx-background-color: white;
+    -fx-background-radius: 50;
+    -fx-min-width: 60px;
+    -fx-min-height: 60px;
+    -fx-alignment: center;
+    -fx-effect: inner-shadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 2, 2);
+}
+
+.score-text-glossy {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.btn-play-again {
+    -fx-background-color: linear-gradient(to bottom, #42e695 0%, #3bb2b8 100%);
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30;
+    -fx-padding: 12 40;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 4);
+    -fx-border-color: rgba(255,255,255,0.6);
+    -fx-border-width: 2;
+    -fx-border-radius: 30;
+}
+
+.btn-play-again:hover {
+    -fx-background-color: linear-gradient(to bottom, #5dfca6 0%, #46cfd6 100%);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btn-menu {
+    -fx-background-color: linear-gradient(to bottom, #ff9966 0%, #ff5e62 100%);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 30;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 4);
+    -fx-border-color: rgba(255,255,255,0.6);
+    -fx-border-width: 2;
+    -fx-border-radius: 30;
+}
+
+.btn-menu:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffaa77 0%, #ff6f73 100%);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+
+/* TURN PASSED POPUP (Amber Theme)  */
+
+.turn-passed-card {
+    /* Glossy Amber/Orange Gradient */
+    -fx-background-color: linear-gradient(to bottom right, #FFB75E 0%, #ED8F03 100%);
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-border-color: white;
+    -fx-border-width: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 30, 0, 0, 10);
+    -fx-padding: 30;
+    -fx-min-width: 380px;
+    -fx-alignment: center;
+}
+
+.turn-passed-header {
+    -fx-font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    -fx-font-size: 32px;
+    -fx-fill: white;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.4), 2, 0, 2, 2);
+    -fx-stroke: #b36b00;
+    -fx-stroke-width: 1;
+}
+
+.turn-passed-text {
+    -fx-font-size: 18px;
+    -fx-text-fill: #fff8e1; /* Very light cream color */
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.btn-orange-glossy {
+    /* Deep Orange Gradient */
+    -fx-background-color: linear-gradient(to bottom, #ff7e5f 0%, #feb47b 100%);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 30;
+    -fx-padding: 10 40;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 4);
+    -fx-border-color: rgba(255,255,255,0.6);
+    -fx-border-width: 2;
+    -fx-border-radius: 30;
+}
+
+.btn-orange-glossy:hover {
+    -fx-background-color: linear-gradient(to bottom, #ff9966 0%, #ff5e62 100%);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

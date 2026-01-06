@@ -14,8 +14,28 @@ import javafx.stage.Modality;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import java.io.IOException;
 import java.util.Optional;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import java.io.IOException;
+
+
+
 
 public class GameController {
     private GameModel model;
@@ -43,7 +63,7 @@ public class GameController {
     private void initializeGrid() {
         gridPane.getChildren().clear();
 
-        // 1. Column Headers (A-H)
+        // Column Headers (A-H)
         String[] cols = {"A", "B", "C", "D", "E", "F", "G", "H"};
         for (int i = 0; i < 8; i++) {
             Label lbl = new Label(cols[i]);
@@ -53,7 +73,7 @@ public class GameController {
             gridPane.add(lbl, i + 1, 0);
         }
 
-        // 2. Row Headers (1-8)
+        //  Row Headers (1-8)
         for (int i = 0; i < 8; i++) {
             Label lbl = new Label(String.valueOf(i + 1));
             lbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
@@ -62,7 +82,7 @@ public class GameController {
             gridPane.add(lbl, 0, i + 1);
         }
 
-        // 3. Board Cells
+        // Board Cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 CellView cell = new CellView(i, j);
@@ -127,12 +147,36 @@ public class GameController {
     }
 
     private void checkTurnSkipped() {
-        if (model.wasTurnSkipped()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Turn Passed");
-            alert.setHeaderText("No Valid Moves!");
-            alert.setContentText("No valid moves available. Turn passes to " + model.getCurrentPlayer());
-            alert.showAndWait();
+        if (model.wasTurnSkipped() && !model.isGameOver()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("turn_passed.fxml"));
+                Parent root = loader.load();
+
+                Label messageLabel = (Label) root.lookup("#messageLabel");
+                Button okButton = (Button) root.lookup("#okButton");
+
+                String nextPlayer = model.getCurrentPlayer() == Piece.BLACK ? "BLACK" : "WHITE";
+                messageLabel.setText("No valid moves available. Turn passes to " + nextPlayer + ".");
+
+                Stage dialogStage = new Stage();
+                dialogStage.initStyle(StageStyle.TRANSPARENT);
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.initOwner(gridPane.getScene().getWindow());
+
+                Scene scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+                dialogStage.setScene(scene);
+
+                okButton.setOnAction(e -> dialogStage.close());
+
+                dialogStage.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             model.resetSkippedFlag();
         }
     }
@@ -178,38 +222,59 @@ public class GameController {
 
     private void showGameOverDialog() {
         Board b = model.getBoard();
-        int black = b.getCount(Piece.BLACK);
-        int white = b.getCount(Piece.WHITE);
+        int blackScore = b.getCount(Piece.BLACK);
+        int whiteScore = b.getCount(Piece.WHITE);
 
-        String title;
-        String content;
-        String header;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("game_result.fxml"));
+            Parent root = loader.load();
 
-        if (black > white) {
-            header = "Winner: PLAYER (Black)";
-            content = "Black wins by " + (black - white) + " points!";
-        } else if (white > black) {
-            header = vsAI ? "Winner: COMPUTER (White)" : "Winner: PLAYER (White)";
-            content = "White wins by " + (white - black) + " points!";
-        } else {
-            header = "It's a Draw!";
-            content = "Both players have " + black + " points.";
-        }
+            javafx.scene.text.Text resultTitle = (javafx.scene.text.Text) root.lookup("#resultTitleText");
+            Label subMessage = (Label) root.lookup("#subMessageLabel");
+            Label sBlack = (Label) root.lookup("#scoreBlack");
+            Label sWhite = (Label) root.lookup("#scoreWhite");
+            Button btnPlay = (Button) root.lookup("#btnNewGame");
+            Button btnClose = (Button) root.lookup("#btnMenu");
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game Over");
-        alert.setHeaderText(header);
-        alert.setContentText(content + "\n\nFinal Score:\nBlack: " + black + "\nWhite: " + white);
+            sBlack.setText(String.valueOf(blackScore));
+            sWhite.setText(String.valueOf(whiteScore));
 
-        ButtonType restartBtn = new ButtonType("Restart");
-        ButtonType closeBtn = new ButtonType("Close");
-        alert.getButtonTypes().setAll(restartBtn, closeBtn);
+            if (blackScore > whiteScore) {
+                resultTitle.setText("YOU WIN!");
+                subMessage.setText("Black dominates the board!");
+            } else if (whiteScore > blackScore) {
+                resultTitle.setText("YOU LOST!");
+                subMessage.setText("Better luck next time.");
+            } else {
+                resultTitle.setText("DRAW!");
+                subMessage.setText("Perfectly balanced.");
+            }
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == restartBtn) {
-            restart();
+            Stage dialogStage = new Stage();
+            dialogStage.initStyle(StageStyle.TRANSPARENT);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(gridPane.getScene().getWindow());
+
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+            dialogStage.setScene(scene);
+
+            btnPlay.setOnAction(e -> {
+                dialogStage.close();
+                restart();
+            });
+
+            btnClose.setOnAction(e -> dialogStage.close());
+
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 
     public void restart() {
         model.restart();
