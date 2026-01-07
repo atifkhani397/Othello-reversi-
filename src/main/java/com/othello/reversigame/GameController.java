@@ -211,67 +211,69 @@ public class GameController {
     }
 
     private void showGameOverDialog() {
-        Board b = model.getBoard();
-        int blackScore = b.getCount(Piece.BLACK);
-        int whiteScore = b.getCount(Piece.WHITE);
+        javafx.application.Platform.runLater(() -> {
+            Board b = model.getBoard();
+            int blackScore = b.getCount(Piece.BLACK);
+            int whiteScore = b.getCount(Piece.WHITE);
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("game_result.fxml"));
-            Parent root = loader.load();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("game_result.fxml"));
+                Parent root = loader.load();
 
-            javafx.scene.text.Text resultTitle = (javafx.scene.text.Text) root.lookup("#resultTitleText");
-            Label subMessage = (Label) root.lookup("#subMessageLabel");
-            Label sBlack = (Label) root.lookup("#scoreBlack");
-            Label sWhite = (Label) root.lookup("#scoreWhite");
-            Button btnPlay = (Button) root.lookup("#btnNewGame");
-            Button btnClose = (Button) root.lookup("#btnMenu");
+                javafx.scene.text.Text resultTitle = (javafx.scene.text.Text) root.lookup("#resultTitleText");
+                Label subMessage = (Label) root.lookup("#subMessageLabel");
+                Label sBlack = (Label) root.lookup("#scoreBlack");
+                Label sWhite = (Label) root.lookup("#scoreWhite");
+                Button btnPlay = (Button) root.lookup("#btnNewGame");
+                Button btnClose = (Button) root.lookup("#btnMenu");
 
-            sBlack.setText(String.valueOf(blackScore));
-            sWhite.setText(String.valueOf(whiteScore));
+                sBlack.setText(String.valueOf(blackScore));
+                sWhite.setText(String.valueOf(whiteScore));
 
-            if (blackScore > whiteScore) {
-                resultTitle.setText("YOU WIN!");
-                subMessage.setText("Black dominates the board!");
-            } else if (whiteScore > blackScore) {
-                resultTitle.setText("YOU LOST!");
-                subMessage.setText("Better luck next time.");
-            } else {
-                resultTitle.setText("DRAW!");
-                subMessage.setText("Perfectly balanced.");
+                if (blackScore > whiteScore) {
+                    resultTitle.setText("YOU WIN!");
+                    subMessage.setText("Black dominates the board!");
+                } else if (whiteScore > blackScore) {
+                    resultTitle.setText("YOU LOST!");
+                    subMessage.setText("Better luck next time.");
+                } else {
+                    resultTitle.setText("DRAW!");
+                    subMessage.setText("Perfectly balanced.");
+                }
+
+                if (blackScore == 0) {
+                    resultTitle.setText("YOU LOST!");
+                    subMessage.setText("Black was wiped out!");
+                }
+                if (whiteScore == 0) {
+                    resultTitle.setText("YOU WIN!");
+                    subMessage.setText("White was wiped out!");
+                }
+
+                Stage dialogStage = new Stage();
+                dialogStage.initStyle(StageStyle.TRANSPARENT);
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.initOwner(gridPane.getScene().getWindow());
+
+                Scene scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+                dialogStage.setScene(scene);
+
+                btnPlay.setOnAction(e -> {
+                    dialogStage.close();
+                    restart();
+                });
+
+                btnClose.setOnAction(e -> dialogStage.close());
+
+                dialogStage.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            if (blackScore == 0) {
-                resultTitle.setText("YOU LOST!");
-                subMessage.setText("Black was wiped out!");
-            }
-            if (whiteScore == 0) {
-                resultTitle.setText("YOU WIN!");
-                subMessage.setText("White was wiped out!");
-            }
-
-            Stage dialogStage = new Stage();
-            dialogStage.initStyle(StageStyle.TRANSPARENT);
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.initOwner(gridPane.getScene().getWindow());
-
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-
-            dialogStage.setScene(scene);
-
-            btnPlay.setOnAction(e -> {
-                dialogStage.close();
-                restart();
-            });
-
-            btnClose.setOnAction(e -> dialogStage.close());
-
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     public void restart() {
