@@ -119,6 +119,8 @@ src
     └── resources
         └── com.othello.reversigame
             └── style.css           # Custom Styling
+            └── game_over.fxml      # Game over UI Styling
+            └── turn_passed.fxml    # Turned Passed UI Styling
 ```
 ## 👥 Authors / Team Members
 
