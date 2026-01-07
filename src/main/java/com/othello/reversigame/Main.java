@@ -1,4 +1,3 @@
-
 package com.othello.reversigame;
 
 import javafx.application.Application;
@@ -7,47 +6,64 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
     private Stage primaryStage;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         showHomeScreen();
     }
 
-    // SCREEN 1: HOME
     public void showHomeScreen() {
-        VBox root = new VBox(30);
-        root.setAlignment(Pos.CENTER);
-        root.getStyleClass().add("home-bg");
+        VBox root = new VBox();
+        root.setId("root-pane");
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setPadding(Insets.EMPTY);
 
-        // Title
-        Label title = new Label("OTHELLO GAME");
-        title.getStyleClass().add("title-label");
+        HBox titleBar = createTitleBar("Main Menu");
 
-        // Button 1: Player vs Player
+        VBox content = new VBox(25);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(30));
+        VBox.setVgrow(content, Priority.ALWAYS);
+
+        Label title = new Label("OTHELLO");
+        title.setStyle("-fx-font-family: 'Segoe UI Black'; -fx-font-size: 48px; -fx-text-fill: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 0, 5);");
+
         Button pvpBtn = new Button("Player vs Player");
-        pvpBtn.setGraphic(createIcon(false)); // Human Icon
-        pvpBtn.getStyleClass().add("menu-button");
+        pvpBtn.setGraphic(createIcon(false));
+        pvpBtn.getStyleClass().add("capsule-button");
+        pvpBtn.setMinWidth(220);
         pvpBtn.setOnAction(e -> startGame(false));
 
-        // Button 2: Player vs AI
         Button aiBtn = new Button("Player vs Computer");
-        aiBtn.setGraphic(createIcon(true)); // Computer Icon
-        aiBtn.getStyleClass().add("menu-button");
+        aiBtn.setGraphic(createIcon(true));
+        aiBtn.getStyleClass().add("capsule-button");
+        aiBtn.setMinWidth(220);
         aiBtn.setOnAction(e -> startGame(true));
 
-        root.getChildren().addAll(title, pvpBtn, aiBtn);
+        Button exitBtn = new Button("Exit Game");
+        exitBtn.getStyleClass().add("capsule-button");
+        exitBtn.setMinWidth(220);
+        exitBtn.setOnAction(e -> primaryStage.close());
 
-        Scene homeScene = new Scene(root, 600, 700);
+        content.getChildren().addAll(title, pvpBtn, aiBtn, exitBtn);
+        root.getChildren().addAll(titleBar, content);
+
+        Scene homeScene = new Scene(root, 480, 700);
         homeScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setTitle("Othello - Main Menu");
@@ -55,88 +71,167 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    // SCREEN 2: GAME
     public void startGame(boolean vsAI) {
-        BorderPane root = new BorderPane();
-        root.setPadding(new Insets(15));
-        root.setStyle("-fx-background-color: #f4f4f4;");
+        VBox root = new VBox();
+        root.setId("root-pane");
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setPadding(Insets.EMPTY);
 
-        // 1. Top Bar (Player Cards)
-        VBox p1Card = createPlayerCard("Player (Black)", false);
-        VBox p2Card = createPlayerCard(vsAI ? "Computer (White)" : "Player (White)", vsAI);
+        HBox titleBar = createTitleBar("Othello Match");
 
-        HBox topBar = new HBox(40, p1Card, p2Card);
-        topBar.setAlignment(Pos.CENTER);
-        topBar.setPadding(new Insets(0, 0, 15, 0));
-        root.setTop(topBar);
+        VBox content = new VBox(15);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(15));
+        VBox.setVgrow(content, Priority.ALWAYS);
 
-        // 2. Center Grid
+        String p2Name = vsAI ? "Computer (White)" : "Player (White)";
+
+        HBox p1Card = createPlayerCard("Player (Black)", "2", true);
+        HBox p2Card = createPlayerCard(p2Name, "2", false);
+
+        HBox scoreboard = new HBox(20, p1Card, p2Card);
+        scoreboard.setAlignment(Pos.CENTER);
+
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(2);
-        gridPane.setVgap(2);
-        gridPane.setStyle("-fx-background-color: #005500; -fx-padding: 8; -fx-background-radius: 8;");
-        root.setCenter(gridPane);
+        StackPane boardFrame = new StackPane(gridPane);
+        boardFrame.getStyleClass().add("board-frame");
 
-        // Labels inside cards to update score
-        Label p1Score = (Label) p1Card.getChildren().get(2);
-        Label p2Score = (Label) p2Card.getChildren().get(2);
+        Button btnMenu = new Button("Main Menu");
+        btnMenu.getStyleClass().add("capsule-button");
+        btnMenu.setMinWidth(100);
 
-        // 3. Controller
-        GameController controller = new GameController(gridPane, p1Card, p2Card, p1Score, p2Score, vsAI);
+        Button btnRestart = new Button("Restart");
+        btnRestart.getStyleClass().add("capsule-button");
+        btnRestart.setMinWidth(100);
 
-        // 4. Bottom Controls
-        Button backBtn = new Button("Main Menu");
-        backBtn.getStyleClass().add("control-button");
-        backBtn.setOnAction(e -> showHomeScreen());
+        Button btnUndo = new Button("Undo");
+        btnUndo.getStyleClass().add("capsule-button");
+        btnUndo.setMinWidth(100);
 
-        Button restartBtn = new Button("Restart");
-        restartBtn.getStyleClass().add("control-button");
-        restartBtn.setOnAction(e -> controller.restart());
+        HBox controls = new HBox(10, btnMenu, btnRestart, btnUndo);
+        controls.setAlignment(Pos.CENTER);
 
-        Button undoBtn = new Button("Undo");
-        undoBtn.getStyleClass().add("control-button");
-        undoBtn.setOnAction(e -> controller.undo());
+        content.getChildren().addAll(scoreboard, boardFrame, controls);
+        root.getChildren().addAll(titleBar, content);
 
-        CheckBox themeToggle = new CheckBox("Dark Mode");
-        themeToggle.setOnAction(e -> controller.toggleTheme(themeToggle.isSelected()));
+        Label p1ScoreLabel = (Label)((VBox)p1Card.getChildren().get(0)).getChildren().get(1);
+        Label p2ScoreLabel = (Label)((VBox)p2Card.getChildren().get(0)).getChildren().get(1);
 
-        HBox bottomBox = new HBox(15, backBtn, restartBtn, undoBtn, themeToggle);
-        bottomBox.setAlignment(Pos.CENTER);
-        bottomBox.setPadding(new Insets(15, 0, 0, 0));
-        root.setBottom(bottomBox);
+        GameController controller = new GameController(gridPane, p1Card, p2Card,
+                p1ScoreLabel,
+                p2ScoreLabel,
+                vsAI);
 
-        Scene gameScene = new Scene(root, 650, 750);
-        gameScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        btnRestart.setOnAction(e -> controller.restart());
+        btnUndo.setOnAction(e -> controller.undo());
+        btnMenu.setOnAction(e -> showHomeScreen());
 
-        primaryStage.setTitle(vsAI ? "Othello: PvE" : "Othello: PvP");
-        primaryStage.setScene(gameScene);
+        Scene scene = new Scene(root, 480, 700);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-    // HELPER: Draw Icons via Code (No images needed)
-    private VBox createPlayerCard(String name, boolean isComputer) {
-        VBox card = new VBox(5);
+    private HBox createTitleBar(String titleText) {
+        HBox bar = new HBox();
+        bar.setAlignment(Pos.CENTER_RIGHT);
+        bar.setMinHeight(40);
+        bar.setPadding(new Insets(0, 0, 0, 15));
+        bar.setStyle("-fx-background-color: rgba(0,0,0,0.4);");
+
+        Label lblTitle = new Label(titleText);
+        lblTitle.setStyle("-fx-text-fill: #dddddd; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button btnMin = new Button();
+        Line minShape = new Line(0, 0, 10, 0);
+        minShape.setStroke(Color.WHITE);
+        minShape.setStrokeWidth(2);
+        btnMin.setGraphic(minShape);
+        styleTitleButton(btnMin, false);
+        btnMin.setOnAction(e -> primaryStage.setIconified(true));
+
+        Button btnMax = new Button();
+        Rectangle maxShape = new Rectangle(10, 10);
+        maxShape.setFill(Color.TRANSPARENT);
+        maxShape.setStroke(Color.WHITE);
+        maxShape.setStrokeWidth(2);
+        btnMax.setGraphic(maxShape);
+        styleTitleButton(btnMax, false);
+        btnMax.setOnAction(e -> primaryStage.setMaximized(!primaryStage.isMaximized()));
+
+        Button btnClose = new Button();
+        Group closeShape = new Group();
+        Line l1 = new Line(0, 0, 10, 10); l1.setStroke(Color.WHITE); l1.setStrokeWidth(2);
+        Line l2 = new Line(10, 0, 0, 10); l2.setStroke(Color.WHITE); l2.setStrokeWidth(2);
+        closeShape.getChildren().addAll(l1, l2);
+        btnClose.setGraphic(closeShape);
+        styleTitleButton(btnClose, true);
+        btnClose.setOnAction(e -> primaryStage.close());
+
+        bar.getChildren().addAll(lblTitle, spacer, btnMin, btnMax, btnClose);
+
+        bar.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        bar.setOnMouseDragged(event -> {
+            if (!primaryStage.isMaximized()) {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
+            }
+        });
+
+        return bar;
+    }
+
+    private void styleTitleButton(Button btn, boolean isClose) {
+        btn.setMinWidth(45);
+        btn.setMinHeight(40);
+
+        String baseStyle = "-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 0;";
+        btn.setStyle(baseStyle);
+
+        btn.setOnMouseEntered(e -> {
+            if (isClose) {
+                btn.setStyle("-fx-background-color: #E81123; -fx-background-radius: 0;");
+            } else {
+                btn.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 0;");
+            }
+        });
+
+        btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
+    }
+
+    private HBox createPlayerCard(String name, String score, boolean isActive) {
+        HBox card = new HBox(10);
         card.getStyleClass().add("player-card");
+        if(isActive) card.getStyleClass().add("active-card");
+        card.setMinWidth(140);
 
-        // Icon
-        Shape icon = isComputer ? createComputerIcon() : createUserIcon();
-
+        VBox textBox = new VBox(2);
         Label nameLbl = new Label(name);
-        nameLbl.getStyleClass().add("player-name");
+        nameLbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;");
 
-        Label scoreLbl = new Label("2");
-        scoreLbl.getStyleClass().add("score-text");
+        Label scoreLbl = new Label(score);
+        scoreLbl.setStyle("-fx-text-fill: #00ff00; -fx-font-weight: bold; -fx-font-size: 20px;");
 
-        card.getChildren().addAll(icon, nameLbl, scoreLbl);
+        textBox.getChildren().addAll(nameLbl, scoreLbl);
+        card.getChildren().add(textBox);
+        card.setAlignment(Pos.CENTER_LEFT);
         return card;
     }
 
     private Node createIcon(boolean isComputer) {
         Group g = new Group();
         Shape s = isComputer ? createComputerIcon() : createUserIcon();
-        // Scale down for buttons
-        s.setScaleX(0.6);
-        s.setScaleY(0.6);
+        s.setScaleX(0.5);
+        s.setScaleY(0.5);
+        s.setFill(Color.WHITE);
         g.getChildren().add(s);
         return g;
     }
@@ -145,10 +240,6 @@ public class Main extends Application {
         Circle head = new Circle(0, -10, 8);
         Arc body = new Arc(0, 10, 15, 12, 0, 180);
         body.setType(ArcType.CHORD);
-        body.setStroke(Color.BLACK);
-        body.setFill(Color.DARKGRAY);
-        head.setStroke(Color.BLACK);
-        head.setFill(Color.DARKGRAY);
         return Shape.union(head, body);
     }
 
@@ -159,7 +250,6 @@ public class Main extends Application {
         Rectangle base = new Rectangle(-10, 13, 20, 3);
         Shape union = Shape.union(screen, stand);
         union = Shape.union(union, base);
-        union.setFill(Color.rgb(50, 50, 50));
         return union;
     }
 

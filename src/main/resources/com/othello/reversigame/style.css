@@ -416,3 +416,104 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+
+
+/* glowing button with hover effects */
+
+.top-nav-bar {
+    -fx-padding: 15 0 20 0;
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+.capsule-button {
+    -fx-background-color: linear-gradient(to bottom, #6a6a6a 0%, #333 49%, #1a1a1a 50%, #2a2a2a 100%);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: #888;
+    -fx-border-width: 2;
+    -fx-padding: 8 30;
+    -fx-min-width: 110px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.capsule-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #888 0%, #444 49%, #222 50%, #333 100%);
+    -fx-border-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.3), 8, 0, 0, 0);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.capsule-button:pressed {
+    -fx-background-color: #111;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+
+
+#root-pane {
+    -fx-background-color: #2b4d80;
+    -fx-background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.2) 1px, rgba(0,0,0,0.2) 2px),
+        repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0,0,0,0.2) 1px, rgba(0,0,0,0.2) 2px);
+}
+
+.capsule-button {
+    -fx-background-color: linear-gradient(to bottom, #666 0%, #222 50%, #000 51%, #1a1a1a 100%);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: #888;
+    -fx-border-width: 2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 10 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 4);
+    -fx-transition: all 0.3s;
+}
+
+.capsule-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #888 0%, #444 50%, #222 51%, #333 100%);
+    -fx-border-color: #fff;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.4), 15, 0, 0, 0);
+    -fx-translate-y: -2;
+}
+
+.capsule-button:pressed {
+    -fx-background-color: #000;
+    -fx-translate-y: 1;
+}
+
+.player-card {
+    -fx-background-color: linear-gradient(to bottom, rgba(50,50,50,0.9), rgba(0,0,0,0.9));
+    -fx-background-radius: 15;
+    -fx-border-color: #555;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-padding: 10 20;
+    -fx-min-width: 160px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+.active-card {
+    -fx-border-color: #00ff00;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 255, 0, 0.6), 20, 0, 0, 0);
+}
+
+.board-frame {
+    -fx-background-color: #111;
+    -fx-background-radius: 10;
+    -fx-border-color: #444;
+    -fx-border-width: 3;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 25, 0, 0, 10);
+}
