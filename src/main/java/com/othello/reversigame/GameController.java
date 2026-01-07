@@ -2,8 +2,7 @@ package com.othello.reversigame;
 
 import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -13,29 +12,9 @@ import javafx.stage.StageStyle;
 import javafx.stage.Modality;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import java.io.IOException;
-import java.util.Optional;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import java.io.IOException;
-
-
-
 
 public class GameController {
     private GameModel model;
@@ -73,7 +52,7 @@ public class GameController {
             gridPane.add(lbl, i + 1, 0);
         }
 
-        //  Row Headers (1-8)
+        // Row Headers (1-8)
         for (int i = 0; i < 8; i++) {
             Label lbl = new Label(String.valueOf(i + 1));
             lbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
@@ -96,19 +75,14 @@ public class GameController {
     }
 
     private void handleHumanMove(int row, int col) {
-        // Stop if game is over or it's AI's turn
         if (model.isGameOver() || model.isAiTurn()) return;
 
         if (model.playMove(row, col)) {
-            updateView(); // Update board immediately
+            updateView();
 
-            // 1. Check if Human's move ended the game
             if (checkGameOver()) return;
-
-            // 2. Check if turn was passed back to Human (AI has no moves)
             checkTurnSkipped();
 
-            // 3. If Game isn't over and it is now AI's turn, schedule AI move
             if (model.isAiTurn()) {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
                 pause.setOnFinished(e -> performAiMove());
@@ -123,13 +97,9 @@ public class GameController {
         model.playAiMove();
         updateView();
 
-        // 1. Check if AI's move ended the game
         if (checkGameOver()) return;
-
-        // 2. Check if turn was passed back to AI (Human has no moves)
         checkTurnSkipped();
 
-        // 3. Chain reaction: If Human had no moves and it's AI's turn AGAIN, play again
         if (model.isAiTurn() && !model.isGameOver()) {
             PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
             pause.setOnFinished(e -> performAiMove());
@@ -137,7 +107,6 @@ public class GameController {
         }
     }
 
-    // Returns TRUE if game is over, FALSE otherwise
     private boolean checkGameOver() {
         if (model.isGameOver()) {
             showGameOverDialog();
@@ -184,7 +153,7 @@ public class GameController {
     private void updateView() {
         Board board = model.getBoard();
 
-        // Update Pieces
+        // 1. Update Pieces
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j].update(board.getPiece(i, j));
@@ -192,7 +161,7 @@ public class GameController {
             }
         }
 
-        // Highlight Valid Moves for Human
+        // 2. Highlight Valid Moves
         if (!model.isAiTurn() && !model.isGameOver()) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
@@ -203,20 +172,20 @@ public class GameController {
             }
         }
 
-        // Update Scores
+        // 3. Update Scores
         p1Score.setText(String.valueOf(board.getCount(Piece.BLACK)));
         p2Score.setText(String.valueOf(board.getCount(Piece.WHITE)));
 
-        // Active Player Highlight
-        p1Card.getStyleClass().remove("player-card-active");
-        p2Card.getStyleClass().remove("player-card-active");
+        // 4. Update Active Player Glow (FIXED)
+        p1Card.getStyleClass().remove("active-card");
+        p2Card.getStyleClass().remove("active-card");
 
-        if (model.isGameOver()) {
-            // No highlight if game over
-        } else if (model.getCurrentPlayer() == Piece.BLACK) {
-            p1Card.getStyleClass().add("player-card-active");
-        } else {
-            p2Card.getStyleClass().add("player-card-active");
+        if (!model.isGameOver()) {
+            if (model.getCurrentPlayer() == Piece.BLACK) {
+                p1Card.getStyleClass().add("active-card");
+            } else {
+                p2Card.getStyleClass().add("active-card");
+            }
         }
     }
 
@@ -275,7 +244,6 @@ public class GameController {
         }
     }
 
-
     public void restart() {
         model.restart();
         updateView();
@@ -284,10 +252,5 @@ public class GameController {
     public void undo() {
         model.undo();
         updateView();
-    }
-
-    public void toggleTheme(boolean dark) {
-        if (dark) gridPane.getScene().getRoot().setStyle("-fx-base: #2b2b2b;");
-        else gridPane.getScene().getRoot().setStyle("-fx-background-color: #f4f4f4;");
     }
 }
