@@ -7,6 +7,16 @@
 A fully functional, object-oriented implementation of the classic board game **Othello (Reversi)** built with **Java** and **JavaFX**. This project demonstrates advanced Software Engineering concepts including **MVC Architecture**, **AI Algorithms**, and **Modern UI Design**.
 
 
+## SCREENSHOT OF GUI
+---
+ ## Home Screen GUI
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b1092a02-3825-475d-ad71-22466a0b9c9d" />
+
+---
+## PLayer vs Player GUI
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/91407a7c-52d7-4ab4-bb8d-059a1b00ad83" />
+
 
 ---
 
