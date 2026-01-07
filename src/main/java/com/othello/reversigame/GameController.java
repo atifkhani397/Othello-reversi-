@@ -1,3 +1,6 @@
+
+
+
 package com.othello.reversigame;
 
 import javafx.animation.PauseTransition;
@@ -42,7 +45,6 @@ public class GameController {
     private void initializeGrid() {
         gridPane.getChildren().clear();
 
-        // Column Headers (A-H)
         String[] cols = {"A", "B", "C", "D", "E", "F", "G", "H"};
         for (int i = 0; i < 8; i++) {
             Label lbl = new Label(cols[i]);
@@ -52,7 +54,6 @@ public class GameController {
             gridPane.add(lbl, i + 1, 0);
         }
 
-        // Row Headers (1-8)
         for (int i = 0; i < 8; i++) {
             Label lbl = new Label(String.valueOf(i + 1));
             lbl.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
@@ -61,7 +62,6 @@ public class GameController {
             gridPane.add(lbl, 0, i + 1);
         }
 
-        // Board Cells
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 CellView cell = new CellView(i, j);
@@ -108,7 +108,11 @@ public class GameController {
     }
 
     private boolean checkGameOver() {
-        if (model.isGameOver()) {
+        Board b = model.getBoard();
+        int black = b.getCount(Piece.BLACK);
+        int white = b.getCount(Piece.WHITE);
+
+        if (model.isGameOver() || black == 0 || white == 0 || (black + white == 64)) {
             showGameOverDialog();
             return true;
         }
@@ -153,7 +157,6 @@ public class GameController {
     private void updateView() {
         Board board = model.getBoard();
 
-        // 1. Update Pieces
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 cells[i][j].update(board.getPiece(i, j));
@@ -161,7 +164,6 @@ public class GameController {
             }
         }
 
-        // 2. Highlight Valid Moves
         if (!model.isAiTurn() && !model.isGameOver()) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
@@ -172,11 +174,9 @@ public class GameController {
             }
         }
 
-        // 3. Update Scores
         p1Score.setText(String.valueOf(board.getCount(Piece.BLACK)));
         p2Score.setText(String.valueOf(board.getCount(Piece.WHITE)));
 
-        // 4. Update Active Player Glow (FIXED)
         p1Card.getStyleClass().remove("active-card");
         p2Card.getStyleClass().remove("active-card");
 
@@ -217,6 +217,15 @@ public class GameController {
             } else {
                 resultTitle.setText("DRAW!");
                 subMessage.setText("Perfectly balanced.");
+            }
+
+            if (blackScore == 0) {
+                resultTitle.setText("YOU LOST!");
+                subMessage.setText("Black was wiped out!");
+            }
+            if (whiteScore == 0) {
+                resultTitle.setText("YOU WIN!");
+                subMessage.setText("White was wiped out!");
             }
 
             Stage dialogStage = new Stage();
